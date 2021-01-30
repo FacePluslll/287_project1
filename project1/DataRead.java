@@ -25,9 +25,9 @@ public class DataRead {
 	 * @throws ParseException
 	 */
 	public static ArrayList<String> readFile() throws IOException, ParseException{
-		FileInputStream inputFile = new FileInputStream("input.txt"); //Creates a fileInputStream that will receive from input.txt
+		FileInputStream inputFile = new FileInputStream("project1/input.txt"); //Creates a fileInputStream that will receive from input.txt
 		Scanner scnr = new Scanner(inputFile); //Creates a scanner that will read from inputFile, input.txt
-		FileOutputStream outputFile = new FileOutputStream("output.txt");
+		FileOutputStream outputFile = new FileOutputStream("project1/output.txt");
 		PrintWriter writer = new PrintWriter(outputFile);
 	
 		//Creating variables that will store the data
