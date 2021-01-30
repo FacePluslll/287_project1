@@ -65,14 +65,14 @@ public class DataRead {
 				System.out.println("Invalid status type");
 			}
 			
-			/*
+			
 			//Prints a formatted version of all the data that shows how the data can be used
 			System.out.println("\n-------Movie info-------");
 			System.out.println("Name: " + name);
 			System.out.println("Genre/description: " + description);
 			System.out.println("Receive date: " + receiveDate);
 			System.out.println("Release date: " + releaseDate);
-			System.out.println("Status: " + curStatus); */
+			System.out.println("Status: " + curStatus);
 			
  		}
 		
