@@ -7,14 +7,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.io.File; 
 
-
+//package project;
 
 public class DataRead {
 
 	public static void main(String[] args) throws IOException, ParseException {
 		// TODO Auto-generated method stub
-		readFile();
+		ArrayList<Movie> movies = new ArrayList<Movie>(); // This is a test array
+		movies = readFile();
+		save(movies);
+		save(movies);
 	}
 	
 	
@@ -24,12 +28,10 @@ public class DataRead {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public static ArrayList<String> readFile() throws IOException, ParseException{
-		FileInputStream inputFile = new FileInputStream("project1/input.txt"); //Creates a fileInputStream that will receive from input.txt
+	public static ArrayList<Movie> readFile() throws IOException, ParseException{
+		FileInputStream inputFile = new FileInputStream("input.txt"); //Creates a fileInputStream that will receive from input.txt
 		Scanner scnr = new Scanner(inputFile); //Creates a scanner that will read from inputFile, input.txt
-		FileOutputStream outputFile = new FileOutputStream("project1/output.txt");
-		PrintWriter writer = new PrintWriter(outputFile);
-	
+
 		//Creating variables that will store the data
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy"); //Uses SimpleDateFormat to receive a string input in the form of month/day/year . ex: 04/30/2021
 		Date releaseDate = new Date(); // This is a Date type called releaseDate that will store the release date in month/day/year format
@@ -37,8 +39,7 @@ public class DataRead {
 		String name; //This is a string that will store the name of the movie
 		String description; //This is a string that will store the genre/description of the movie
 		Status curStatus = null; //This calls the enum that sets the current status of the movie
-		ArrayList<String> movie = new ArrayList<String>(); // This will be the final ArrayList that will store the movie info
-		
+		ArrayList<Movie> movies = new ArrayList<Movie>(); // This will be the final ArrayList that will store the movie info
 		
 		String line = "";
 		while (scnr.hasNext()) { //Checks to see if there is another line in the file
@@ -55,35 +56,43 @@ public class DataRead {
 			
 			
 			//Checks to see if the movie status is received or released, then sets the enum accordingly
-			if (lineList[4].equals("received")) {
+			if (lineList[4].equals("RECEIVED")) {
 				curStatus = Status.RECEIVED;
 			}
-			else if (lineList[4].equals("released")) {
+			else if (lineList[4].equals("RELEASED")) {
 				curStatus = Status.RELEASED;
 			}
 			else {
 				System.out.println("Invalid status type");
 			}
 			
-			
-			//Prints a formatted version of all the data that shows how the data can be used
-			System.out.println("\n-------Movie info-------");
-			System.out.println("Name: " + name);
-			System.out.println("Genre/description: " + description);
-			System.out.println("Receive date: " + receiveDate);
-			System.out.println("Release date: " + releaseDate);
-			System.out.println("Status: " + curStatus);
+			Movie movie = new Movie(name, releaseDate, description, receiveDate, lineList[4]); //Creates a movie with all of the data found
+			movies.add(movie); // Adds the new movie to the list of movies
 			
  		}
-		
+
 		//Closes all open writers, fileInput streams, files, and fileOutputStreams
+		scnr.close();
+		inputFile.close();
+		return movies;
+		
+	}
+
+	public static void save(ArrayList<Movie> movies) throws IOException{
+		File file = new File("input.txt");
+		FileInputStream inputFile = new FileInputStream(file);
+		Scanner scnr = new Scanner(inputFile);
+		FileOutputStream outputFile = new FileOutputStream(file);
+		PrintWriter writer = new PrintWriter(outputFile);
+
+
+		for (int i = 0; i < movies.size(); i++) {
+			writer.write(movies.get(i).toString() + "\n");
+		}
+
 		writer.close();
 		scnr.close();
 		inputFile.close();
-		
-		
-		return movie;
-		
 	}
 	
 	public enum Status{RECEIVED, RELEASED}

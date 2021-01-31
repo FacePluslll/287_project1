@@ -1,7 +1,7 @@
 import java.util.*;
 import java.text.*;
-
-
+import java.util.Date;
+//package project;
 public class Movie implements Comparable<Movie> {
 	private Date releaseDate;
 	private String name;
@@ -19,9 +19,6 @@ public class Movie implements Comparable<Movie> {
 		this.description = description;
 		this.receiveDate = receiveDate;
 		this.status = Status.valueOf(strStatus);
-	}
-	public String toString() {
-		return name;
 	}
 	public Date getReleaseDate() {
 		return releaseDate;
@@ -57,5 +54,13 @@ public class Movie implements Comparable<Movie> {
 	}
 	public void setReceiveDate(String newStrStatus) {
 		this.status = Status.valueOf(newStrStatus);
+	}
+
+	@Override
+	public String toString() {
+		DateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
+		String relDate = sdf.format(this.releaseDate);
+		String recDate = sdf.format(this.receiveDate);
+		return(this.name + ", " + this.description + ", " + recDate+ ", " + relDate + ", " + this.status);
 	}
 }
