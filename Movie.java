@@ -48,7 +48,6 @@ public class Movie implements Comparable<Movie> {
 	public void setName(String newName) {
 		this.name = newName;
 	}
-	// mov = new Movie(name, releaseDate, description, receiveDate, strStatus);
 	public void setReleaseDate(Date newReleaseDate) {
 		this.releaseDate = newReleaseDate;
 	}
@@ -60,5 +59,13 @@ public class Movie implements Comparable<Movie> {
 	}
 	public void setReceiveDate(String newStrStatus) {
 		this.status = Status.valueOf(newStrStatus);
+	}
+	public void displayMovie(Movie m) {
+		System.out.println("Name: " + name + 
+		           "\nRelease Date: " + releaseDate + 
+		           "\nDescription: " + description + 
+		           "\nReceive Date: " + receiveDate + 
+		           "\nStatus: " + status + 
+		           "----------------------------------------------");
 	}
 }
