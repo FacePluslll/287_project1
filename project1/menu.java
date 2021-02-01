@@ -63,8 +63,10 @@ public class menu {
 				boolean isRightMovie = false;
 				System.out.print("Please enter a movie name: ");
 				movieName = scnr.nextLine().trim();
-				for (int i = 0; i < movieListCOMING.size(); i++) {
-					tempovie = movieListCOMING.get(i);
+				Iterator<Movie> iter = movieListCOMING.iterator();
+
+				while(iter.hasNext()){
+					tempovie = iter.next();
 					if(tempovie.getName().compareTo(movieName) == 0){
 						isRightMovie = true;
 						break;
@@ -88,8 +90,10 @@ public class menu {
 				boolean isRightMovie = false;
 				System.out.print("Please enter a movie name: ");
 				movieName = scnr.nextLine().trim();
-				for (int i = 0; i < movieListCOMING.size(); i++) {
-					tempovie = movieListCOMING.get(i);
+				Iterator<Movie> iter = movieListCOMING.iterator();
+
+				while(iter.hasNext()){
+					tempovie = iter.next();
 					if(tempovie.getName().compareTo(movieName) == 0){
 						isRightMovie = true;
 						break;
@@ -136,7 +140,8 @@ public class menu {
 		scnr.close();
 	}
 	public static void orderList () {
-        // Uses Insertion Sort to sort the ArrayList
+		// Uses Insertion Sort to sort the ArrayList
+		
 		ArrayList<Movie> tempMovieList = new ArrayList<Movie>();
 		for(int i = 0; i < movieListCOMING.size(); i++){
 			if(tempMovieList.isEmpty()){
