@@ -1,7 +1,8 @@
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -9,8 +10,9 @@ import java.util.Scanner;
 public class menu {
 	public static ArrayList<Movie> movieListCOMING = new ArrayList<Movie>();
 	public static ArrayList<Movie> movieListSHOWING = new ArrayList<Movie>();
-    public static void main(String[] args) {
-		
+
+    public static void main(String[] args) throws IOException, ParseException{
+		loadlist();
 		System.out.println("--------------------------------------------Menu--------------------------------------------");
 		System.out.println("Choose one of the following options, to choose, type the input shown in quotes; ex: \"prnt\"");
 		System.out.println(" * Please note, the menu choices are CASE SENSITIVE!\n");
@@ -28,45 +30,6 @@ public class menu {
 		Scanner scnr = new Scanner(System.in);
 		
 		String userInput = "";
-		//Remove when readable files is done___________________________________________________
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-		ParsePosition pos = new ParsePosition(0);
-
-		Date m1Arrived = new Date();
-		Date m1Released = new Date();
-
-		m1Arrived = dateFormat.parse("12/12/1997",pos);
-		pos.setIndex(0);
-		m1Released = dateFormat.parse("12/19/1997",pos);
-
-		Date m2Arrived = new Date();
-		Date m2Released = new Date();
-
-		pos.setIndex(0);
-		m2Arrived = dateFormat.parse("09/25/2019",pos);
-		pos.setIndex(0);
-		m2Released = dateFormat.parse("10/5/2019",pos);
-
-		Movie m1 = new Movie("Titanic", m1Released, "Romance/Drama/Historical", m1Arrived, "RELEASED");
-		Movie m2 = new Movie("Parasite", m2Released, "Drama/Thriller", m2Arrived, "RECEIVED");
-		System.out.println(m1.getName());
-		System.out.println(m1.getReleaseDate());
-		System.out.println(m1.getReceiveDate());
-		System.out.println(m1.getDescription());
-		System.out.println(m1.getStatus());
-
-		System.out.println(m2.getName());
-		System.out.println(m2.getReleaseDate());
-		System.out.println(m2.getReceiveDate());
-		System.out.println(m2.getDescription());
-		System.out.println(m2.getStatus());
-		movieListSHOWING.add(m1);
-		movieListCOMING.add(m2);
-
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(m1Arrived);
-		System.out.println(dateFormat.format(m1Arrived));
-		//Remove when readable files is done___________________________________________________
 
 		while (userInput.compareTo("exit") != 0) {
 			System.out.print("\nEnter a menu option: ");
@@ -100,9 +63,10 @@ public class menu {
 				// Number of movies showing before a given date
 				countMovies();
 			}
-			//erik
+			//erik/Joey
 			if (userInput.compareTo("save") == 0) {
 				// Saves the file changes
+				saveList();
 			}
 			
 			//End of user input comparison
@@ -113,6 +77,33 @@ public class menu {
 		}
 		
 		scnr.close();
+	}
+	private static void saveList() throws IOException{
+		ArrayList<Movie> tempMovieList = new ArrayList<Movie>();
+		tempMovieList.addAll(movieListCOMING);
+		tempMovieList.addAll(movieListSHOWING);
+		DataRead.save(tempMovieList);
+	}
+
+
+	private static void loadlist() throws IOException, ParseException{
+		ArrayList<Movie> tempMovieList = new ArrayList<Movie>();
+		tempMovieList = DataRead.readFile();
+		Iterator<Movie> iter = tempMovieList.iterator();
+
+		Movie tempMovie = new Movie();
+
+		while(iter.hasNext()){
+			tempMovie = iter.next();
+			if(tempMovie.getStatus() == Movie.Status.RELEASED){
+				movieListSHOWING.add(tempMovie);
+			}
+			else if(tempMovie.getStatus() == Movie.Status.RECEIVED){
+				movieListCOMING.add(tempMovie);
+			}
+		}
+		return;
+		
 	}
 	// This function adds a moving to the showing list from the coming list...
 	private static void showMovie(){

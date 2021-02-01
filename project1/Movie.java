@@ -20,6 +20,14 @@ public class Movie implements Comparable<Movie> {
 		this.receiveDate = receiveDate;
 		this.status = Status.valueOf(strStatus);
 	}
+	public Movie(){
+		this.name = null;
+		this.releaseDate = null;
+		this.description = null;
+		this.receiveDate = null;
+		this.status = null;
+	}
+
 	public Date getReleaseDate() {
 		return releaseDate;
 	}
