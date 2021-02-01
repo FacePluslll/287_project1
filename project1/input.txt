@@ -1,6 +1,6 @@
-Titanic, Romance/Drama/Historical, 12/12/1997, 12/19/1997, RELEASED
 Parasite, Drama/Thriller, 09/25/2019, 10/05/2019, RECEIVED
-Example1, Romance/Drama/Historical, 5/6/1997, 6/19/1997, RELEASED
-Example2, Drama/Thriller, 2/3/2019, 3/2/2019, RECEIVED
-Example3, Romance/Drama/Historical, 4/7/1997, 5/15/1997, RELEASED
-Example4, Drama/Thriller, 8/8/2019, 8/9/2019, RECEIVED
+Example2, Drama/Thriller, 02/03/2019, 03/02/2019, RECEIVED
+Example4, Drama/Thriller, 08/08/2019, 08/09/2019, RECEIVED
+Titanic, Romance/Drama/Historical, 12/12/1997, 12/19/1997, RELEASED
+Example1, Romance/Drama/Historical, 05/06/1997, 06/19/1997, RELEASED
+Example3, Romance/Drama/Historical, 04/07/1997, 05/15/1997, RELEASED

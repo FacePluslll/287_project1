@@ -10,9 +10,11 @@ import java.util.Scanner;
 public class menu {
 	public static ArrayList<Movie> movieListCOMING = new ArrayList<Movie>();
 	public static ArrayList<Movie> movieListSHOWING = new ArrayList<Movie>();
+	public static Scanner scnr = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException, ParseException{
 		loadlist();
+		orderList();
 		System.out.println("--------------------------------------------Menu--------------------------------------------");
 		System.out.println("Choose one of the following options, to choose, type the input shown in quotes; ex: \"prnt\"");
 		System.out.println(" * Please note, the menu choices are CASE SENSITIVE!\n");
@@ -26,12 +28,10 @@ public class menu {
 		System.out.println("\nType \"exit\" to exit the program.");
 		System.out.println("--------------------------------------------------------------------------------------------");
 		
-		
-		Scanner scnr = new Scanner(System.in);
-		
 		String userInput = "";
 
 		while (userInput.compareTo("exit") != 0) {
+			userInput = "";
 			System.out.print("\nEnter a menu option: ");
 			userInput = scnr.nextLine().trim();
 			
@@ -39,6 +39,16 @@ public class menu {
 			//sonal
 			if (userInput.compareTo("dsply") == 0) {
 				// Displays the movies
+				Movie tempovie = new Movie();
+				for (int i = 0; i < movieListCOMING.size(); ++i){
+					tempovie = movieListCOMING.get(i);
+					tempovie.displayMovie();
+				}
+					
+				for (int i = 0; i < movieListSHOWING.size(); ++i){
+					tempovie = movieListSHOWING.get(i);
+					tempovie.displayMovie();
+				}
 			}
 			//erik
 			if (userInput.compareTo("addM") == 0) {
@@ -46,12 +56,61 @@ public class menu {
 				addMovie();
 			}
 			//sonal
-			if (userInput.compareTo("editDte") == 0) {
+			if (userInput.compareTo("editMDesc") == 0) {
 				// Edit a movie's release date
+				String movieName;
+				Movie tempovie = new Movie();
+				boolean isRightMovie = false;
+				System.out.print("Please enter a movie name: ");
+				movieName = scnr.nextLine().trim();
+				for (int i = 0; i < movieListCOMING.size(); i++) {
+					tempovie = movieListCOMING.get(i);
+					if(tempovie.getName().compareTo(movieName) == 0){
+						isRightMovie = true;
+						break;
+					}
+				}
+				if(isRightMovie){
+					System.out.print("Please enter a new Description for movie "+ tempovie.getName()+": ");
+					userInput = scnr.nextLine().trim();
+					tempovie.setDescription(userInput);
+				}
+				else{
+					System.out.println("Could not find movie returning to menu.");
+				}
+
 			}
 			//sonal
-			if (userInput.compareTo("editMDesc") == 0) {
+			if (userInput.compareTo("editDte") == 0) {
 				// Edit a movie's description
+				String movieName;
+				Movie tempovie = new Movie();
+				boolean isRightMovie = false;
+				System.out.print("Please enter a movie name: ");
+				movieName = scnr.nextLine().trim();
+				for (int i = 0; i < movieListCOMING.size(); i++) {
+					tempovie = movieListCOMING.get(i);
+					if(tempovie.getName().compareTo(movieName) == 0){
+						isRightMovie = true;
+						break;
+					}
+				}
+				SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+				Date newDate = new Date();
+				if(isRightMovie){
+					System.out.print("Please enter a new release date for movie "+ tempovie.getName()+": ");
+					userInput = scnr.nextLine().trim();
+					newDate = dateFormat.parse(userInput);
+					if(newDate.before(tempovie.getReceiveDate())){
+						System.out.println("Date was wrongly entered returning to menu.");
+					}
+					else{
+						tempovie.setReleaseDate(newDate);
+					}
+				}
+				else{
+					System.out.println("Could not find movie returning to menu.");
+				}
 			}
 			//erik
 			if (userInput.compareTo("showM") == 0) {
@@ -70,14 +129,31 @@ public class menu {
 			}
 			
 			//End of user input comparison
-			
 		}
 		if (userInput.compareTo("exit") == 0) {
 			System.out.println("\nProgram exited. Have a nice day.");
 		}
-		
 		scnr.close();
 	}
+	public static void orderList () {
+        // Uses Insertion Sort to sort the ArrayList
+		ArrayList<Movie> tempMovieList = new ArrayList<Movie>();
+		for(int i = 0; i < movieListCOMING.size(); i++){
+			if(tempMovieList.isEmpty()){
+				tempMovieList.add(movieListCOMING.get(i));
+			}
+			else{
+				for(int x = 0; x < tempMovieList.size(); x++)
+				if(tempMovieList.get(x).getReleaseDate().after(movieListCOMING.get(i).getReleaseDate()) || tempMovieList.get(i-1).getReleaseDate().equals(movieListCOMING.get(i).getReleaseDate())){
+					tempMovieList.add(x,movieListCOMING.get(i));
+					break;
+				}
+			}
+		}
+		movieListCOMING.clear();
+		movieListCOMING.addAll(tempMovieList);
+    }
+	
 	private static void saveList() throws IOException{
 		ArrayList<Movie> tempMovieList = new ArrayList<Movie>();
 		tempMovieList.addAll(movieListCOMING);
@@ -116,7 +192,6 @@ public class menu {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		ParsePosition pos = new ParsePosition(0);
 		
-		Scanner scnr = new Scanner(System.in);
 		String userInput;
 
 		System.out.println("Please enter a date in the format dd/mm/yyyy: ");
@@ -128,7 +203,6 @@ public class menu {
 			userInput = scnr.nextLine().trim();
 			compareDate = dateFormat.parse(userInput,pos);
 			if(userInput.compareTo("exit") == 0){
-				scnr.close();
 				return;
 			}
 		}
@@ -157,14 +231,12 @@ public class menu {
 		}
 
 		System.out.println("Amount of movies added: "+count);
-		scnr.close();
 		return;
 
 
 	}
 	//This function counts the amount of Showing movies before the given date and prints them, otherwise just prints "No movies are being shown before this date!"
 	private static void countMovies(){
-		Scanner scnr = new Scanner(System.in);
 		String userInput;
 		Date compareDate = new Date();
 
@@ -186,7 +258,6 @@ public class menu {
 			userInput = scnr.nextLine().trim();
 			compareDate = dateFormat.parse(userInput,pos);
 			if(userInput.compareTo("exit") == 0){
-				scnr.close();
 				return;
 			}
 		}
@@ -218,14 +289,12 @@ public class menu {
 			System.out.println("Amount of Movies: " + count);
 			System.out.println("------------------------");
 		}
-		scnr.close();
 		return;
 	}
 
 	//This fucntion adds an movie to the movieList, returns nothing and has no parms
 	private static void addMovie() {
 		// RECEIVED RELEASED
-		Scanner scnr = new Scanner(System.in);
 		String userInput;
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -258,7 +327,6 @@ public class menu {
 				System.out.print("\nYou entered the name incorrectly and you must try again... type exit to return the menu or anything to try again...");
 				userInput = scnr.nextLine().trim();
 				if(userInput.compareTo("exit") == 0){
-					scnr.close();
 					return;
 				}
 				System.out.print("\nEnter movie name: ");
@@ -301,7 +369,6 @@ public class menu {
 					System.out.print("\nYou entered the date incorrectly and you must try again... type exit to return the menu or anything to try again...");
 					userInput = scnr.nextLine().trim();
 					if(userInput.compareTo("exit") == 0){
-						scnr.close();
 						return;
 					}
 					userInput = "";
@@ -334,7 +401,6 @@ public class menu {
 					System.out.print("\nYou entered the date incorrectly and you must try again... type exit to return the menu or anything to try again...");
 					userInput = scnr.nextLine().trim();
 					if(userInput.compareTo("exit") == 0){
-						scnr.close();
 						return;
 					}
 					userInput = "";
@@ -345,7 +411,6 @@ public class menu {
 				System.out.print("\nYou entered the dates incorrectly and you must try again(the releasedate is before the receivedate)... type exit to return the menu or anything to try again...");
 				userInput = scnr.nextLine().trim();
 				if(userInput.compareTo("exit") == 0){
-					scnr.close();
 					return;
 				}
 			}
@@ -359,7 +424,6 @@ public class menu {
 		addingMovie.setReleaseDate(releaseDate);
 
 		movieListCOMING.add(addingMovie);
-		scnr.close();
 		return;
 	}
 }

@@ -71,4 +71,12 @@ public class Movie implements Comparable<Movie> {
 		String recDate = sdf.format(this.receiveDate);
 		return(this.name + ", " + this.description + ", " + recDate+ ", " + relDate + ", " + this.status);
 	}
+	public void displayMovie() {
+		System.out.println("Name: " + name + 
+		           "\nRelease Date: " + releaseDate + 
+		           "\nDescription: " + description + 
+		           "\nReceive Date: " + receiveDate + 
+		           "\nStatus: " + this.getStatus() + 
+		           "\n----------------------------------------------");
+	}
 }

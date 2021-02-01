@@ -29,7 +29,7 @@ public class DataRead {
 	 * @throws ParseException
 	 */
 	public static ArrayList<Movie> readFile() throws IOException, ParseException{
-		FileInputStream inputFile = new FileInputStream("input.txt"); //Creates a fileInputStream that will receive from input.txt
+		FileInputStream inputFile = new FileInputStream("project1/input.txt"); //Creates a fileInputStream that will receive from input.txt
 		Scanner scnr = new Scanner(inputFile); //Creates a scanner that will read from inputFile, input.txt
 
 		//Creating variables that will store the data
@@ -79,7 +79,7 @@ public class DataRead {
 	}
 
 	public static void save(ArrayList<Movie> movies) throws IOException{
-		File file = new File("input.txt");
+		File file = new File("project1/input.txt");
 		FileInputStream inputFile = new FileInputStream(file);
 		Scanner scnr = new Scanner(inputFile);
 		FileOutputStream outputFile = new FileOutputStream(file);
