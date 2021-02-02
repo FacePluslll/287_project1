@@ -39,95 +39,36 @@ public class menu {
 			//sonal
 			if (userInput.compareTo("dsply") == 0) {
 				// Displays the movies
-				Movie tempovie = new Movie();
-				for (int i = 0; i < movieListCOMING.size(); ++i){
-					tempovie = movieListCOMING.get(i);
-					tempovie.displayMovie();
-				}
-					
-				for (int i = 0; i < movieListSHOWING.size(); ++i){
-					tempovie = movieListSHOWING.get(i);
-					tempovie.displayMovie();
-				}
+				dsplyMovie();
 			}
 			//erik
-			if (userInput.compareTo("addM") == 0) {
+			else if (userInput.compareTo("addM") == 0) {
 				// Adds a movie
 				addMovie();
 			}
 			//sonal
-			if (userInput.compareTo("editMDesc") == 0) {
+			else if (userInput.compareTo("editMDesc") == 0) {
 				// Edit a movie's release date
-				String movieName;
-				Movie tempovie = new Movie();
-				boolean isRightMovie = false;
-				System.out.print("Please enter a movie name: ");
-				movieName = scnr.nextLine().trim();
-				Iterator<Movie> iter = movieListCOMING.iterator();
-
-				while(iter.hasNext()){
-					tempovie = iter.next();
-					if(tempovie.getName().compareTo(movieName) == 0){
-						isRightMovie = true;
-						break;
-					}
-				}
-				if(isRightMovie){
-					System.out.print("Please enter a new Description for movie "+ tempovie.getName()+": ");
-					userInput = scnr.nextLine().trim();
-					tempovie.setDescription(userInput);
-				}
-				else{
-					System.out.println("Could not find movie returning to menu.");
-				}
+				editDesc();
 
 			}
 			//sonal
-			if (userInput.compareTo("editDte") == 0) {
+			else if (userInput.compareTo("editDte") == 0) {
 				// Edit a movie's description
-				String movieName;
-				Movie tempovie = new Movie();
-				boolean isRightMovie = false;
-				System.out.print("Please enter a movie name: ");
-				movieName = scnr.nextLine().trim();
-				Iterator<Movie> iter = movieListCOMING.iterator();
-
-				while(iter.hasNext()){
-					tempovie = iter.next();
-					if(tempovie.getName().compareTo(movieName) == 0){
-						isRightMovie = true;
-						break;
-					}
-				}
-				SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-				Date newDate = new Date();
-				if(isRightMovie){
-					System.out.print("Please enter a new release date for movie "+ tempovie.getName()+": ");
-					userInput = scnr.nextLine().trim();
-					newDate = dateFormat.parse(userInput);
-					if(newDate.before(tempovie.getReceiveDate())){
-						System.out.println("Date was wrongly entered returning to menu.");
-					}
-					else{
-						tempovie.setReleaseDate(newDate);
-					}
-				}
-				else{
-					System.out.println("Could not find movie returning to menu.");
-				}
+				editDate();
 			}
 			//erik
-			if (userInput.compareTo("showM") == 0) {
+			else if (userInput.compareTo("showM") == 0) {
 				// Start showing movies in theatre
 				showMovie();
 			}
 			//erik
-			if (userInput.compareTo("numMDte") == 0) {
+			else if (userInput.compareTo("numMDte") == 0) {
 				// Number of movies showing before a given date
 				countMovies();
 			}
 			//erik/Joey
-			if (userInput.compareTo("save") == 0) {
+			else if (userInput.compareTo("save") == 0) {
 				// Saves the file changes
 				saveList();
 			}
@@ -139,26 +80,101 @@ public class menu {
 		}
 		scnr.close();
 	}
-	public static void orderList () {
-		// Uses Insertion Sort to sort the ArrayList
-		
-		ArrayList<Movie> tempMovieList = new ArrayList<Movie>();
-		for(int i = 0; i < movieListCOMING.size(); i++){
-			if(tempMovieList.isEmpty()){
-				tempMovieList.add(movieListCOMING.get(i));
+	
+	private static void editDate() {
+		String movieName;
+		String userInput;
+		Movie tempovie = new Movie();
+		boolean isRightMovie = false;
+		System.out.print("Please enter a movie name: ");
+		movieName = scnr.nextLine().trim();
+		Iterator<Movie> iter = movieListCOMING.iterator();
+
+		while(iter.hasNext()){
+			tempovie = iter.next();
+			if(tempovie.getName().compareTo(movieName) == 0){
+				isRightMovie = true;
+				break;
+			}
+		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		ParsePosition pos = new ParsePosition(0);
+		Date newDate = new Date();
+		if(isRightMovie){
+			System.out.print("Please enter a new release date for movie "+ tempovie.getName()+": ");
+			userInput = scnr.nextLine().trim();
+			newDate = dateFormat.parse(userInput,pos);
+			pos.setIndex(0);
+			if(newDate.before(tempovie.getReceiveDate())){
+				System.out.println("Date was wrongly entered returning to menu.");
 			}
 			else{
-				for(int x = 0; x < tempMovieList.size(); x++)
-				if(tempMovieList.get(x).getReleaseDate().after(movieListCOMING.get(i).getReleaseDate()) || tempMovieList.get(i-1).getReleaseDate().equals(movieListCOMING.get(i).getReleaseDate())){
-					tempMovieList.add(x,movieListCOMING.get(i));
-					break;
+				tempovie.setReleaseDate(newDate);
+			}
+		}
+		else{
+			System.out.println("Could not find movie returning to menu.");
+		}
+	}
+
+	private static void editDesc() {
+		String movieName;
+		String userInput;
+		Movie tempovie = new Movie();
+		boolean isRightMovie = false;
+		System.out.print("Please enter a movie name: ");
+		movieName = scnr.nextLine().trim();
+		Iterator<Movie> iter = movieListCOMING.iterator();
+
+		while(iter.hasNext()){
+			tempovie = iter.next();
+			if(tempovie.getName().compareTo(movieName) == 0){
+				isRightMovie = true;
+				break;
+			}
+		}
+		if(isRightMovie){
+			System.out.print("Please enter a new Description for movie "+ tempovie.getName()+": ");
+			userInput = scnr.nextLine().trim();
+			tempovie.setDescription(userInput);
+		}
+		else{
+			System.out.println("Could not find movie returning to menu.");
+		}
+	}
+
+	private static void dsplyMovie() {
+		Movie tempovie = new Movie();
+		for (int i = 0; i < movieListCOMING.size(); ++i){
+			tempovie = movieListCOMING.get(i);
+			tempovie.displayMovie();
+		}
+					
+		for (int i = 0; i < movieListSHOWING.size(); ++i){
+			tempovie = movieListSHOWING.get(i);
+			tempovie.displayMovie();
+		}
+	}
+
+	//Orders the list into non-descending order
+	// https://www.sanfoundry.com/java-program-sort-array-descending-order/ for the logic but edited to fit the code of our project ~Erik Sklocic
+	public static void orderList() {
+		ArrayList<Movie> tempMovieList = new ArrayList<Movie>();
+		Movie tempMovie = new Movie();
+		Movie tempMovieComing = new Movie();
+		for(int i = 0; i < movieListCOMING.size(); i++){
+			tempMovie = movieListCOMING.get(i);
+			for(int x = i + 1; x < movieListCOMING.size(); x++){
+				tempMovieComing = movieListCOMING.get(x);
+				if(tempMovieComing.getReleaseDate().before(tempMovie.getReleaseDate())){
+					tempMovieComing = movieListCOMING.get(i);
+					movieListCOMING.set(x, movieListCOMING.get(i));
+					movieListCOMING.set(i, tempMovieComing);
 				}
 			}
 		}
-		movieListCOMING.clear();
-		movieListCOMING.addAll(tempMovieList);
-    }
-	
+	}
+	//Combines both list and saves them to input.txt with the use of DataRead
 	private static void saveList() throws IOException{
 		ArrayList<Movie> tempMovieList = new ArrayList<Movie>();
 		tempMovieList.addAll(movieListCOMING);
@@ -166,7 +182,7 @@ public class menu {
 		DataRead.save(tempMovieList);
 	}
 
-
+	//This function loads the list from DataRead and spilts them into there respescted list
 	private static void loadlist() throws IOException, ParseException{
 		ArrayList<Movie> tempMovieList = new ArrayList<Movie>();
 		tempMovieList = DataRead.readFile();
@@ -226,12 +242,14 @@ public class menu {
 				moviesToShow.remove(tempMovie);
 			}
 		}
-		//adds all movies from the list to movielistSHOWING
+		//adds all movies from the list to movielistSHOWING and removes it from the coming list
 		int count = 0;
 		iter = moviesToShow.iterator();
 		while(iter.hasNext()){
 			tempMovie = iter.next();
+			tempMovie.setReceiveStatus("RELEASED");
 			movieListSHOWING.add(tempMovie);
+			movieListCOMING.remove(tempMovie);
 			count++;
 		}
 
@@ -250,7 +268,7 @@ public class menu {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		ParsePosition pos = new ParsePosition(0);
 
-		Iterator<Movie> iter = movieListSHOWING.iterator();
+		Iterator<Movie> iter = movieListCOMING.iterator();
 
 		ArrayList<Movie> moviesToShow = new ArrayList<Movie>();
 
@@ -305,6 +323,7 @@ public class menu {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		ParsePosition pos = new ParsePosition(0);
 		Iterator<Movie> iter = movieListCOMING.iterator();
+		Iterator<Movie> iter2 = movieListSHOWING.iterator();
 
 		Date releaseDate = new Date();
 		Date receiveDate = new Date();
@@ -318,27 +337,61 @@ public class menu {
 		//Adds the name and checks if its been used yet...
 		System.out.print("\nEnter movie name: ");
 		userInput = scnr.nextLine().trim();
-		while(iter.hasNext()){
-			tempMovie = iter.next();
 
-			if(tempMovie.getName().compareTo(userInput) == 0){
-				isInputInCorrectFormat = false;
-			}
-			if(!isInputInCorrectFormat){
-				//need to reset iterator, declaring it again will reset it
-				iter = movieListCOMING.iterator();
+		Boolean bothCondtionsPassed = true;
 
-				isInputInCorrectFormat = true;
-				System.out.print("\nYou entered the name incorrectly and you must try again... type exit to return the menu or anything to try again...");
-				userInput = scnr.nextLine().trim();
-				if(userInput.compareTo("exit") == 0){
-					return;
+		//Checks if name is in the two list, if so repeat untill its not or user exits
+		while(true){
+			while(iter.hasNext()){
+				tempMovie = iter.next();
+
+				if(tempMovie.getName().compareTo(userInput) == 0){
+					isInputInCorrectFormat = false;
+					bothCondtionsPassed = true;
 				}
-				System.out.print("\nEnter movie name: ");
-				userInput = scnr.nextLine().trim();
+				if(!isInputInCorrectFormat){
+					//need to reset iterator, declaring it again will reset it
+					iter = movieListCOMING.iterator();
+
+					isInputInCorrectFormat = true;
+					System.out.print("\nYou entered the name incorrectly and you must try again... type exit to return the menu or anything to try again...");
+					userInput = scnr.nextLine().trim();
+					if(userInput.compareTo("exit") == 0){
+						return;
+					}
+					System.out.print("\nEnter movie name: ");
+					userInput = scnr.nextLine().trim();
+				}
+			}	
+			while(iter2.hasNext()){
+				tempMovie = iter2.next();
+
+				if(tempMovie.getName().compareTo(userInput) == 0){
+					isInputInCorrectFormat = false;
+					bothCondtionsPassed = true;
+				}
+				if(!isInputInCorrectFormat){
+					//need to reset iterator, declaring it again will reset it
+					iter = movieListCOMING.iterator();
+
+					isInputInCorrectFormat = true;
+					System.out.print("\nYou entered the name incorrectly and you must try again... type exit to return the menu or anything to try again...");
+					userInput = scnr.nextLine().trim();
+					if(userInput.compareTo("exit") == 0){
+						return;
+					}
+					System.out.print("\nEnter movie name: ");
+					userInput = scnr.nextLine().trim();
+				}
+			}	
+			if(!bothCondtionsPassed){
+				break;
 			}
-		}	
-		//made past loop check, add movie name to new movie
+			else{
+				bothCondtionsPassed = false;
+			}
+		}
+		//made past loop checks, add movie name to new movie
 		addingMovie.setName(userInput);
 
 		//Adds description to movie... nothing to do special here move along...

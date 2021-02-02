@@ -43,7 +43,10 @@ public class DataRead {
 		
 		String line = "";
 		while (scnr.hasNext()) { //Checks to see if there is another line in the file
-			line = scnr.nextLine(); // Sets a variable equal to that line
+			line = scnr.nextLine().trim(); // Sets a variable equal to that line
+			if(line.isEmpty()){
+				continue;
+			}
 			String[] lineList = line.split(",");
 			for (int i = 0; i < lineList.length; i++) {
 				lineList[i] = lineList[i].trim();

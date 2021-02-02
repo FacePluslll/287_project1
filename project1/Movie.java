@@ -60,7 +60,7 @@ public class Movie implements Comparable<Movie> {
 	public void setReceiveDate(Date newReceiveDate) {
 		this.receiveDate = newReceiveDate;
 	}
-	public void setReceiveDate(String newStrStatus) {
+	public void setReceiveStatus(String newStrStatus) {
 		this.status = Status.valueOf(newStrStatus);
 	}
 
